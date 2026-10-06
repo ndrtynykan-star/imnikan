@@ -1,35 +1,39 @@
 import { Facebook, Instagram, Linkedin, Youtube } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { CONTACT, FOOTER_COLUMNS } from '@/data/content'
 import { Logo } from '@/components/ui/Logo'
+import { Newsletter } from '@/components/layout/Newsletter'
+import { BRAND, CONTACT, FOOTER_COLUMNS } from '@/data/content'
 
 const SOCIALS = [
   { Icon: Instagram, label: 'Instagram' },
-  { Icon: Facebook, label: 'Facebook' },
   { Icon: Linkedin, label: 'LinkedIn' },
   { Icon: Youtube, label: 'YouTube' },
+  { Icon: Facebook, label: 'Facebook' },
 ]
 
 export function Footer() {
   return (
-    <footer id="contact" className="border-t border-white/10 bg-ink">
+    <footer className="bg-navy text-ivory">
       <div className="shell py-16 lg:py-20">
-        <div className="grid gap-12 lg:grid-cols-[1.3fr_2fr] lg:gap-20">
+        <div className="grid gap-12 lg:grid-cols-[1.15fr_2.1fr] lg:gap-16">
           <div>
             <Logo />
-            <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted">
-              A private advisory for luxury residential acquisitions, disposals and investment across
-              Dubai’s prime freehold communities.
+            <p className="mt-6 max-w-sm font-display text-[1.05rem] italic leading-relaxed text-gold-soft">
+              {BRAND.tagline}
             </p>
+            <p className="mt-5 max-w-sm text-[13px] leading-relaxed text-ivory/60">
+              {BRAND.description}
+            </p>
+
             <div className="mt-8 flex items-center gap-3">
               {SOCIALS.map(({ Icon, label }) => (
                 <a
                   key={label}
                   href="#"
                   aria-label={label}
-                  className="flex h-10 w-10 items-center justify-center border border-white/10 text-cream/75 transition-colors duration-300 hover:border-champagne hover:text-champagne"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-ivory/75 transition-colors duration-300 hover:border-gold hover:text-gold"
                 >
-                  <Icon className="h-4 w-4" aria-hidden="true" />
+                  <Icon className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
                 </a>
               ))}
             </div>
@@ -37,56 +41,43 @@ export function Footer() {
 
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             {FOOTER_COLUMNS.map((column) => (
-              <div key={column.title}>
-                <h3 className="text-[10px] font-sans uppercase tracking-label text-champagne">
-                  {column.title}
-                </h3>
+              <nav key={column.title} aria-label={column.title}>
+                <h3 className="text-[10px] uppercase tracking-label text-gold">{column.title}</h3>
                 <ul className="mt-5 space-y-3">
                   {column.links.map((link) => (
                     <li key={`${column.title}-${link.label}`}>
                       <Link
                         to={link.to}
-                        className="text-sm text-muted transition-colors duration-300 hover:text-cream"
+                        className="text-[13px] text-ivory/65 transition-colors duration-300 hover:text-gold"
                       >
                         {link.label}
                       </Link>
                     </li>
                   ))}
                 </ul>
-              </div>
+              </nav>
             ))}
 
-            <div>
-              <h3 className="text-[10px] font-sans uppercase tracking-label text-champagne">Contact</h3>
-              <ul className="mt-5 space-y-3 text-sm text-muted">
-                <li>{CONTACT.city}</li>
-                <li>
-                  <a href={CONTACT.phoneHref} className="transition-colors hover:text-cream">
-                    {CONTACT.phone}
-                  </a>
-                </li>
-                <li>
-                  <a href={`mailto:${CONTACT.email}`} className="transition-colors hover:text-cream">
-                    {CONTACT.email}
-                  </a>
-                </li>
-                <li className="text-muted/70">{CONTACT.hours}</li>
-              </ul>
-            </div>
+            <Newsletter />
           </div>
         </div>
 
         <div className="mt-14 flex flex-col gap-4 border-t border-white/10 pt-7 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-muted">© 2026 Dubai Elite Homes. All Rights Reserved.</p>
+          <p className="text-[11.5px] text-ivory/50">© 2026 Dubai House. All rights reserved.</p>
           <ul className="flex flex-wrap items-center gap-6">
             <li>
-              <a href="#" className="text-xs text-muted transition-colors hover:text-cream">
+              <a href="#" className="text-[11.5px] text-ivory/50 transition-colors hover:text-gold">
                 Privacy Policy
               </a>
             </li>
             <li>
-              <a href="#" className="text-xs text-muted transition-colors hover:text-cream">
+              <a href="#" className="text-[11.5px] text-ivory/50 transition-colors hover:text-gold">
                 Terms &amp; Conditions
+              </a>
+            </li>
+            <li>
+              <a href={CONTACT.phoneHref} className="text-[11.5px] text-ivory/50 transition-colors hover:text-gold">
+                {CONTACT.phone}
               </a>
             </li>
           </ul>

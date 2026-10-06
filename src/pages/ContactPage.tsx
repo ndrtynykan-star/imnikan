@@ -7,7 +7,7 @@ import { PHOTO } from '@/lib/images'
 const FAQ = [
   {
     q: 'Can foreign nationals buy freehold property in Dubai?',
-    a: 'Yes. Freehold ownership is available to all nationalities in designated zones, and purchases above AED 2M qualify for a renewable Golden Visa.',
+    a: 'Yes. Freehold ownership is available to all nationalities in designated zones, and purchases above AED 2M qualify for a renewable ten-year Golden Visa.',
   },
   {
     q: 'What are the transaction costs?',
@@ -24,30 +24,30 @@ export default function ContactPage() {
     <>
       <PageHero
         eyebrow="Contact"
-        title="Speak With A Private Advisor."
+        title="Let’s Talk About Your Next Move."
         description={`Our Dubai office is open ${CONTACT.hours}. International clients are welcome to request an out-of-hours call.`}
         imageId={PHOTO.lobby}
         imageAlt="Luxury hotel lobby interior in Dubai"
       />
 
-      <section className="bg-ink py-16 lg:py-24">
+      <section className="bg-warm py-16 lg:py-24">
         <div className="shell">
           <ContactForm />
         </div>
       </section>
 
-      <section className="border-t border-white/[0.08] bg-ink-800 py-20">
+      <section className="bg-ivory py-20 lg:py-24">
         <div className="shell">
           <Reveal>
             <p className="eyebrow">Good To Know</p>
-            <h2 className="display-md mt-5 text-cream">Frequently Asked</h2>
+            <h2 className="display-md mt-4 text-ink">Frequently Asked</h2>
           </Reveal>
 
-          <dl className="mt-12 grid gap-px border-t border-white/[0.08] sm:grid-cols-3">
+          <dl className="mt-12 grid gap-px border-t border-ink/10 sm:grid-cols-3">
             {FAQ.map((item, index) => (
               <Reveal key={item.q} delay={index * 90}>
-                <div className="h-full border-b border-white/[0.08] py-8 sm:border-r sm:pr-8">
-                  <dt className="font-display text-[1.15rem] leading-snug text-cream">{item.q}</dt>
+                <div className="h-full border-b border-ink/10 py-8 sm:border-r sm:pr-8">
+                  <dt className="font-display text-[1.15rem] leading-snug text-ink">{item.q}</dt>
                   <dd className="mt-3.5 text-[13px] leading-relaxed text-muted">{item.a}</dd>
                 </div>
               </Reveal>

@@ -1,52 +1,48 @@
 import { Link } from 'react-router-dom'
 
 type Props = {
-  /** `light` sits on the dark hero, `dark` on cream sections. */
+  /** `light` sits on dark navy / photography, `dark` on ivory sections. */
   tone?: 'light' | 'dark'
   className?: string
+  showTagline?: boolean
 }
 
-function SkylineMark({ className = '' }: { className?: string }) {
+/** Minimal architectural mark — three vertical bars rising like a skyline. */
+export function BarsMark({ className = '' }: { className?: string }) {
   return (
-    <svg viewBox="0 0 40 40" className={className} aria-hidden="true" focusable="false">
-      <path
-        d="M20 2.5c1.9 3.4 2.6 7.4 2.6 11.4v23.6h-5.2V13.9c0-4 .7-8 2.6-11.4Z"
-        fill="currentColor"
-        opacity="0.95"
-      />
-      <path d="M11 15.2h4.6v22.3H11z" fill="currentColor" opacity="0.55" />
-      <path d="M24.4 20.5H29v17H24.4z" fill="currentColor" opacity="0.55" />
-      <path d="M4.2 26.4h4.4v11.1H4.2z" fill="currentColor" opacity="0.35" />
-      <path d="M31.4 24h4.4v13.5h-4.4z" fill="currentColor" opacity="0.35" />
-      <path d="M2 37.9h36v1.4H2z" fill="currentColor" opacity="0.8" />
+    <svg viewBox="0 0 26 30" className={className} aria-hidden="true" focusable="false">
+      <rect x="1" y="12" width="3.4" height="18" fill="currentColor" opacity="0.6" />
+      <rect x="7.2" y="5" width="3.4" height="25" fill="currentColor" />
+      <rect x="13.4" y="9" width="3.4" height="21" fill="currentColor" opacity="0.8" />
+      <rect x="19.6" y="1" width="3.4" height="29" fill="currentColor" />
     </svg>
   )
 }
 
-export function Logo({ tone = 'light', className = '' }: Props) {
-  const primary = tone === 'light' ? 'text-cream' : 'text-graphite'
-  const secondary = tone === 'light' ? 'text-muted' : 'text-graphite/60'
-  const mark = tone === 'light' ? 'text-champagne' : 'text-gold'
+export function Logo({ tone = 'light', className = '', showTagline = true }: Props) {
+  const primary = tone === 'light' ? 'text-ivory' : 'text-ink'
+  const secondary = tone === 'light' ? 'text-ivory/55' : 'text-muted'
+  const mark = tone === 'light' ? 'text-gold' : 'text-gold-deep'
 
   return (
     <Link
       to="/"
       className={`group flex items-center gap-3 ${className}`}
-      aria-label="Dubai Elite Homes — home"
+      aria-label="Dubai House — home"
     >
-      <SkylineMark
-        className={`h-9 w-9 shrink-0 ${mark} transition-transform duration-500 ease-luxury group-hover:scale-105`}
-      />
+      <BarsMark className={`h-8 w-6 shrink-0 ${mark} transition-transform duration-500 ease-luxury group-hover:scale-y-105`} />
       <span className="flex flex-col leading-none">
-        <span className={`font-display text-[15px] tracking-[0.13em] sm:text-[17px] ${primary}`}>
-          DUBAI ELITE HOMES
+        <span
+          className={`font-display text-[17px] tracking-[0.2em] sm:text-[19px] ${primary}`}
+        >
+          DUBAI HOUSE
         </span>
-        <span className={`mt-1 text-[7.5px] uppercase tracking-[0.24em] sm:text-[8.5px] ${secondary}`}>
-          Real Estate • Investment • Lifestyle
-        </span>
+        {showTagline && (
+          <span className={`mt-1.5 text-[7px] uppercase tracking-[0.28em] sm:text-[8px] ${secondary}`}>
+            Properties for a Brighter Tomorrow
+          </span>
+        )}
       </span>
     </Link>
   )
 }
-
-export { SkylineMark }

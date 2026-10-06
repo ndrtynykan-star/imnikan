@@ -1,42 +1,43 @@
 import { ArrowButton } from '@/components/ui/ArrowButton'
 import { Reveal } from '@/components/ui/Reveal'
-import { PHOTO, photoSrcSet, photoUrl } from '@/lib/images'
+import { SmartImage } from '@/components/ui/SmartImage'
+import { PHOTO } from '@/lib/images'
 
 export function FinalCTA() {
   return (
-    <section className="relative isolate overflow-hidden bg-ink py-24 lg:py-32">
-      <img
-        src={photoUrl(PHOTO.dubaiAerial, 2000)}
-        srcSet={photoSrcSet(PHOTO.dubaiAerial)}
-        sizes="100vw"
-        alt=""
-        className="absolute inset-0 -z-10 h-full w-full object-cover opacity-[0.22]"
-        loading="lazy"
-        decoding="async"
-      />
-      <div className="absolute inset-0 -z-10 bg-ink/70" aria-hidden="true" />
-
-      <div className="shell relative">
+    <section className="bg-warm">
+      <div className="shell py-20 lg:py-28">
         <Reveal>
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="eyebrow">The Next Step</p>
-            <h2 className="display-lg mt-6 text-cream">
-              Ready To Find
-              <br />
-              Your Place
-              <br />
-              In Dubai?
-            </h2>
-            <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-cream/70">
-              Let&rsquo;s turn your next move into your best investment.
-            </p>
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <ArrowButton to="/properties" variant="gold" size="lg" className="w-full sm:w-auto">
-                Explore Properties
-              </ArrowButton>
-              <ArrowButton to="/contact" variant="outline" size="lg" className="w-full sm:w-auto">
-                Contact An Expert
-              </ArrowButton>
+          <div className="grid items-center gap-12 border border-ink/10 bg-ivory p-8 sm:p-12 lg:grid-cols-2 lg:gap-16 lg:p-14">
+            <div>
+              <p className="eyebrow">Let’s Build Your Tomorrow</p>
+              <h2 className="display-lg mt-4 text-ink">Ready to Find Your Place in Dubai?</h2>
+              <p className="mt-6 max-w-md text-[13.5px] leading-relaxed text-muted">
+                Get expert advice, personalised property recommendations, and exclusive access to
+                off-market opportunities.
+              </p>
+              <div className="mt-9">
+                <ArrowButton to="/contact" variant="gold" pill size="lg">
+                  Talk to an Expert
+                </ArrowButton>
+              </div>
+            </div>
+
+            <div className="relative h-[260px] overflow-hidden lg:h-[340px]">
+              <SmartImage
+                id={PHOTO.skylineNight}
+                alt="Panoramic Dubai skyline illuminated at night"
+                sizes="(min-width: 1024px) 42vw, 100vw"
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-navy/45" aria-hidden="true" />
+              <p className="absolute inset-x-7 bottom-7 text-[11px] uppercase leading-[1.9] tracking-[0.28em] text-ivory">
+                Invest Today
+                <br />
+                A Brighter
+                <br />
+                Tomorrow Awaits
+              </p>
             </div>
           </div>
         </Reveal>

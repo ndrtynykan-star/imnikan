@@ -3,7 +3,7 @@ export function formatAED(value: number): string {
 }
 
 export function formatArea(sqft: number): string {
-  return `${sqft.toLocaleString('en-US')} sq ft`
+  return `${sqft.toLocaleString('en-US')} sqft`
 }
 
 /** AED prices sit in the millions/billions — keep the display short and premium. */

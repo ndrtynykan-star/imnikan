@@ -4,78 +4,57 @@ export const NAV_LINKS = [
   { label: 'Home', to: '/' },
   { label: 'Properties', to: '/properties' },
   { label: 'About', to: '/about' },
-  { label: 'Services', to: '/services' },
+  { label: 'Invest', to: '/invest' },
+  { label: 'Blog', to: '/blog' },
   { label: 'Contact', to: '/contact' },
 ] as const
 
+export const BRAND = {
+  name: 'Dubai House',
+  tagline: 'Properties for a Brighter Tomorrow',
+  description:
+    'Connecting people to exceptional properties in one of the world’s most inspiring cities.',
+}
+
 export const CONTACT = {
-  city: 'Dubai, United Arab Emirates',
-  address: 'Level 42, Boulevard Plaza Tower 1, Downtown Dubai, UAE',
-  phone: '+971 4 000 0000',
-  phoneHref: 'tel:+97140000000',
-  email: 'hello@dubaielitehomes.com',
+  city: 'Dubai, UAE',
+  address: 'Level 42, Emirates Financial Towers, DIFC, Dubai, UAE',
+  phone: '+971 4 512 8800',
+  phoneHref: 'tel:+97145128800',
+  whatsappHref: 'https://wa.me/97145128800',
+  email: 'hello@dubaihouse.ae',
   hours: 'Sunday – Thursday, 09:00 – 19:00 GST',
 }
 
-export type TrustItem = { title: string; icon: 'shield' | 'building' | 'pin' | 'handshake' }
+/** Eyebrow above the hero headline. */
+export const HERO_EYEBROW = ['Live', 'Invest', 'Belong'] as const
+export const HERO_TITLE_LINES = ['Discover a', 'Brighter Tomorrow', 'in Dubai'] as const
+export const HERO_SCRIPT = 'A Global Address for New Beginnings'
+export const HERO_SUBTITLE =
+  'Premium properties. Global opportunities. A better way to live, invest, and grow.'
 
-export const TRUST_ITEMS: TrustItem[] = [
-  { title: 'Trusted\nExperts', icon: 'shield' },
-  { title: 'Premium\nProperties', icon: 'building' },
-  { title: 'Prime\nLocations', icon: 'pin' },
-  { title: 'Personalized\nGuidance', icon: 'handshake' },
+export type Stat = { value: string; label: string; icon: 'building' | 'smile' | 'calendar' | 'globe' }
+
+export const HERO_STATS: Stat[] = [
+  { value: '2,500+', label: 'Properties', icon: 'building' },
+  { value: '98%', label: 'Client Satisfaction', icon: 'smile' },
+  { value: '15+', label: 'Years in Dubai', icon: 'calendar' },
+  { value: 'Global', label: 'Investor Network', icon: 'globe' },
 ]
 
-export type Service = {
-  number: string
-  title: string
+export type Category = {
+  name: string
   description: string
-  icon: 'key' | 'tag' | 'building' | 'chart' | 'layers' | 'globe'
+  count: number
+  image: string
 }
 
-export const SERVICES: Service[] = [
-  {
-    number: '01',
-    title: 'Buying',
-    description:
-      'Off-market access, disciplined negotiation and full due diligence across every freehold community.',
-    icon: 'key',
-  },
-  {
-    number: '02',
-    title: 'Selling',
-    description:
-      'Editorial photography, targeted private placement and pricing analysis grounded in real transaction data.',
-    icon: 'tag',
-  },
-  {
-    number: '03',
-    title: 'Property Management',
-    description:
-      'Tenant sourcing, rent collection and maintenance oversight with quarterly reporting on every asset.',
-    icon: 'building',
-  },
-  {
-    number: '04',
-    title: 'Investment Consulting',
-    description:
-      'Yield modelling, exit planning and Golden Visa structuring for private and institutional clients.',
-    icon: 'chart',
-  },
-  {
-    number: '05',
-    title: 'Off-Plan Properties',
-    description:
-      'Developer allocations, escrow verification and payment plans negotiated on your behalf.',
-    icon: 'layers',
-  },
-  {
-    number: '06',
-    title: 'Relocation Services',
-    description:
-      'Schools, healthcare, banking and residency coordination for families arriving in the UAE.',
-    icon: 'globe',
-  },
+export const CATEGORIES: Category[] = [
+  { name: 'Villas', description: 'Refined living spaces', count: 420, image: PHOTO.villaC },
+  { name: 'Apartments', description: 'Urban living redefined', count: 860, image: PHOTO.downtown },
+  { name: 'Townhouses', description: 'Space for every story', count: 310, image: PHOTO.houseE },
+  { name: 'Penthouses', description: 'Elevated experiences', count: 145, image: PHOTO.skylineNight },
+  { name: 'Commercial', description: 'Spaces for growth', count: 230, image: PHOTO.tower },
 ]
 
 export type Location = {
@@ -87,26 +66,87 @@ export type Location = {
 }
 
 export const LOCATIONS: Location[] = [
-  { name: 'Palm Jumeirah', tagline: 'Beachfront villas & frond estates', properties: 86, averagePrice: 'AED 12.5M', image: PHOTO.palm },
-  { name: 'Downtown Dubai', tagline: 'Burj Khalifa & the boulevard', properties: 132, averagePrice: 'AED 3.4M', image: PHOTO.downtown },
-  { name: 'Dubai Marina', tagline: 'Yacht berths & waterfront towers', properties: 118, averagePrice: 'AED 2.9M', image: PHOTO.marina },
-  { name: 'Emirates Hills', tagline: 'Gated estates on the fairway', properties: 34, averagePrice: 'AED 28M', image: PHOTO.villaB },
-  { name: 'Jumeirah', tagline: 'Coastal villas & the bay islands', properties: 71, averagePrice: 'AED 18M', image: PHOTO.houseA },
-  { name: 'Dubai Hills Estate', tagline: 'Golf living & family villas', properties: 95, averagePrice: 'AED 4.2M', image: PHOTO.houseE },
-  { name: 'Business Bay', tagline: 'The canal & executive living', properties: 147, averagePrice: 'AED 2.1M', image: PHOTO.tower },
-  { name: 'Bluewaters Island', tagline: 'Ain Dubai & the open sea', properties: 42, averagePrice: 'AED 6.7M', image: PHOTO.skylineNight },
+  {
+    name: 'Downtown Dubai',
+    tagline: 'Burj Khalifa & the boulevard',
+    properties: 132,
+    averagePrice: 'AED 3.4M',
+    image: PHOTO.downtown,
+  },
+  {
+    name: 'Palm Jumeirah',
+    tagline: 'Beachfront villas & frond estates',
+    properties: 86,
+    averagePrice: 'AED 12.5M',
+    image: PHOTO.palm,
+  },
+  {
+    name: 'Dubai Marina',
+    tagline: 'Yacht berths & waterfront towers',
+    properties: 118,
+    averagePrice: 'AED 2.9M',
+    image: PHOTO.marina,
+  },
+  {
+    name: 'Emirates Hills',
+    tagline: 'Gated estates on the fairway',
+    properties: 34,
+    averagePrice: 'AED 28M',
+    image: PHOTO.villaB,
+  },
+  {
+    name: 'Dubai Creek Harbour',
+    tagline: 'The new waterfront district',
+    properties: 95,
+    averagePrice: 'AED 2.4M',
+    image: PHOTO.dubaiAerial,
+  },
 ]
 
-export type Stat = { value: number; suffix?: string; prefix?: string; label: string; decimals?: number }
+export type TrustPoint = { title: string; icon: 'shield' | 'support' | 'growth' }
 
-export const STATS: Stat[] = [
-  { value: 10, suffix: '+', label: 'Years Experience' },
-  { value: 500, suffix: '+', label: 'Properties Sold' },
-  { value: 2.5, suffix: 'B+', prefix: 'AED ', label: 'Property Value', decimals: 1 },
-  { value: 20, suffix: '+', label: 'Prime Locations' },
+export const TRUST_POINTS: TrustPoint[] = [
+  { title: 'Trusted by\nGlobal Investors', icon: 'shield' },
+  { title: 'End-to-End\nSupport', icon: 'support' },
+  { title: 'Long-Term\nValue', icon: 'growth' },
 ]
 
-/** Quarterly index of prime Dubai residential values, base 100 in 2021. */
+export type Benefit = { title: string; icon: 'percent' | 'yield' | 'infra' | 'hub' }
+
+export const INVEST_BENEFITS: Benefit[] = [
+  { title: '0% Property Tax', icon: 'percent' },
+  { title: 'High Rental Yields', icon: 'yield' },
+  { title: 'World-Class Infrastructure', icon: 'infra' },
+  { title: 'A Global Business Hub', icon: 'hub' },
+]
+
+export const WHY_DUBAI = [
+  {
+    title: 'Zero Income Tax',
+    body: 'No personal income tax, no capital gains tax and no annual property tax on residential freehold ownership.',
+  },
+  {
+    title: 'Residency by Investment',
+    body: 'A AED 2M freehold purchase qualifies the owner for a renewable ten-year UAE Golden Visa.',
+  },
+  {
+    title: 'Currency & Capital',
+    body: 'The dirham is pegged to the US dollar, and 100% repatriation of capital and profit is permitted.',
+  },
+  {
+    title: 'Regulated Market',
+    body: 'Escrow-protected off-plan purchases and a central registry administered by the Dubai Land Department.',
+  },
+]
+
+export const MARKET_OVERVIEW = [
+  { label: 'Prime residential transactions', value: 'AED 142B', note: 'trailing twelve months' },
+  { label: 'Average prime price growth', value: '+11.8%', note: 'year on year' },
+  { label: 'International buyer share', value: '64%', note: 'above AED 10M' },
+  { label: 'Average gross yield', value: '6.4%', note: 'across the portfolio' },
+]
+
+/** Prime Dubai residential value index, base 100 in 2021. */
 export const INVESTMENT_GROWTH = [
   { label: '2021', value: 100 },
   { label: '2022', value: 118 },
@@ -118,76 +158,88 @@ export const INVESTMENT_GROWTH = [
 
 export const DISTRICT_GROWTH = [
   { name: 'Palm Jumeirah', change: 18.4 },
-  { name: 'Jumeirah Bay', change: 15.1 },
+  { name: 'Dubai Harbour', change: 15.9 },
   { name: 'Emirates Hills', change: 12.6 },
   { name: 'Downtown Dubai', change: 9.8 },
   { name: 'Dubai Marina', change: 7.2 },
+]
+
+export const YIELD_BANDS = [
+  { name: 'Apartments', gross: 7.8, net: 6.2 },
+  { name: 'Townhouses', gross: 6.9, net: 5.5 },
+  { name: 'Penthouses', gross: 5.8, net: 4.6 },
+  { name: 'Villas', gross: 4.9, net: 3.9 },
+]
+
+export const INVEST_AREAS = [
+  { name: 'Palm Jumeirah', note: 'Land-scarce waterfront with the strongest long-run appreciation in the emirate.' },
+  { name: 'Downtown Dubai', note: 'The deepest rental market in Dubai, anchored by the Burj Khalifa district.' },
+  { name: 'Dubai Creek Harbour', note: 'Early-cycle masterplan with off-plan entry points and 2028–2030 handover.' },
+  { name: 'Emirates Hills', note: 'Dubai’s most exclusive gated community, trading in single-digit plot volumes.' },
 ]
 
 export type Testimonial = {
   quote: string
   name: string
   role: string
-  location: string
+  portrait: string
+  rating: number
 }
 
 export const TESTIMONIALS: Testimonial[] = [
   {
     quote:
-      'They found a frond villa that never reached the portals, then handled every permit and handover detail. The whole acquisition took nineteen days.',
+      'Dubai House made our investment journey seamless. Their team was professional, transparent, and truly understood our goals. We couldn’t be happier with our new apartment in Downtown Dubai.',
+    name: 'James Carter',
+    role: 'Investor from the UK',
+    portrait: PHOTO.about,
+    rating: 5,
+  },
+  {
+    quote:
+      'They found a frond villa that never reached the portals, then handled every permit and handover detail. The whole acquisition took nineteen days from first viewing to title deed.',
     name: 'Marcus Lindqvist',
-    role: 'Private Investor',
-    location: 'Palm Jumeirah',
+    role: 'Private Investor, Sweden',
+    portrait: PHOTO.lobby,
+    rating: 5,
   },
   {
     quote:
-      'We were relocating from London with two children. Schools, tenancy and banking were arranged before we landed — genuinely nothing was left to chance.',
-    name: 'Priya & Daniel Rao',
-    role: 'Homeowners',
-    location: 'Dubai Hills Estate',
-  },
-  {
-    quote:
-      'Their yield modelling was more rigorous than my own analysts’. Two off-plan allocations later, the portfolio is outperforming our underwriting.',
+      'Their yield modelling was more rigorous than my own analysts’. Two off-plan allocations later, the portfolio is comfortably outperforming our underwriting.',
     name: 'Hessa Al Nuaimi',
     role: 'Family Office Principal',
-    location: 'Downtown Dubai',
+    portrait: PHOTO.tower,
+    rating: 5,
   },
 ]
 
-export const SIDEBAR_FEATURES = [
-  { title: 'Modern & Responsive Design', icon: 'monitor' },
-  { title: 'SEO Optimized', icon: 'chart' },
-  { title: 'Fast & Secure', icon: 'shield' },
-  { title: 'Ongoing Support', icon: 'headset' },
-] as const
-
 export const FOOTER_COLUMNS = [
   {
-    title: 'Explore',
+    title: 'Quick Links',
     links: [
+      { label: 'Home', to: '/' },
       { label: 'Properties', to: '/properties' },
-      { label: 'Locations', to: '/properties?view=locations' },
-      { label: 'New Developments', to: '/properties?status=Off-Plan' },
-      { label: 'Investment', to: '/services' },
-    ],
-  },
-  {
-    title: 'Company',
-    links: [
-      { label: 'About', to: '/about' },
-      { label: 'Services', to: '/services' },
-      { label: 'Our Team', to: '/about' },
+      { label: 'About Us', to: '/about' },
+      { label: 'Invest', to: '/invest' },
+      { label: 'Blog', to: '/blog' },
       { label: 'Contact', to: '/contact' },
     ],
   },
   {
-    title: 'Resources',
+    title: 'Properties',
     links: [
-      { label: 'Property Guide', to: '/about' },
-      { label: 'Dubai Market', to: '/services' },
-      { label: 'Investment Guide', to: '/services' },
-      { label: 'FAQ', to: '/contact' },
+      { label: 'Villas', to: '/properties?type=Villas' },
+      { label: 'Apartments', to: '/properties?type=Apartments' },
+      { label: 'Townhouses', to: '/properties?type=Townhouses' },
+      { label: 'Penthouses', to: '/properties?type=Penthouses' },
+      { label: 'Commercial', to: '/properties?type=Commercial' },
     ],
+  },
+  {
+    title: 'Locations',
+    links: LOCATIONS.map((location) => ({
+      label: location.name,
+      to: `/properties?location=${encodeURIComponent(location.name)}`,
+    })),
   },
 ] as const

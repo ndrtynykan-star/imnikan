@@ -1,20 +1,22 @@
 import { useEffect, useState } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { Footer } from '@/components/layout/Footer'
-import { MenuOverlay } from '@/components/layout/MenuOverlay'
+import { MobileMenu } from '@/components/layout/MobileMenu'
 import { Navbar } from '@/components/layout/Navbar'
-import { PromotionalSidebar } from '@/components/layout/PromotionalSidebar'
 import { SearchOverlay } from '@/components/search/SearchOverlay'
 import AboutPage from '@/pages/AboutPage'
+import Blog from '@/pages/Blog'
+import BlogPost from '@/pages/BlogPost'
 import ContactPage from '@/pages/ContactPage'
+import Favorites from '@/pages/Favorites'
 import Home from '@/pages/Home'
+import Invest from '@/pages/Invest'
 import NotFound from '@/pages/NotFound'
 import Properties from '@/pages/Properties'
 import PropertyDetail from '@/pages/PropertyDetail'
-import ServicesPage from '@/pages/ServicesPage'
 import { UiProvider } from '@/lib/store'
 
-/** Resets scroll on navigation — the fixed sidebar keeps its own position. */
+/** Resets scroll on navigation. */
 function ScrollToTop() {
   const { pathname } = useLocation()
 
@@ -27,33 +29,35 @@ function ScrollToTop() {
 
 function Shell() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const { pathname } = useLocation()
+
+  // Any route change closes the overlay menu.
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [pathname])
 
   return (
-    <div className="min-h-screen bg-ink">
-      <div className="lg:pr-72 xl:pr-80">
-        <Navbar onOpenMenu={() => setMenuOpen(true)} />
+    <div className="flex min-h-screen flex-col bg-warm">
+      <Navbar onOpenMenu={() => setMenuOpen(true)} />
 
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/properties" element={<Properties />} />
-            <Route path="/properties/:slug" element={<PropertyDetail />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/properties" element={<Properties />} />
+          <Route path="/properties/:slug" element={<PropertyDetail />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/invest" element={<Invest />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
 
-        {/* Tablet/mobile: the promotional panel joins the normal page flow. */}
-        <PromotionalSidebar variant="inline" />
-        <Footer />
-      </div>
+      <Footer />
 
-      {/* Desktop: the reference's fixed right-hand rail. */}
-      <PromotionalSidebar variant="rail" />
-
-      <MenuOverlay open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
       <SearchOverlay />
     </div>
   )

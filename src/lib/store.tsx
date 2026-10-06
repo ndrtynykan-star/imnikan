@@ -10,7 +10,7 @@ type UiContextValue = {
 }
 
 const UiContext = createContext<UiContextValue | null>(null)
-const STORAGE_KEY = 'deh.favorites'
+const STORAGE_KEY = 'dubaihouse.favorites'
 
 export function UiProvider({ children }: { children: ReactNode }) {
   const [searchOpen, setSearchOpen] = useState(false)

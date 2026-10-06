@@ -6,14 +6,16 @@ type Props = {
   description?: string
   imageId: string
   imageAlt: string
+  /** Optional decorative script line under the description. */
+  script?: string
 }
 
-/** Compact dark banner used at the top of every inner page. */
-export function PageHero({ eyebrow, title, description, imageId, imageAlt }: Props) {
+/** Inner-page hero: navy ground, cinematic image, editorial heading stack. */
+export function PageHero({ eyebrow, title, description, imageId, imageAlt, script }: Props) {
   return (
-    <section className="relative isolate -mt-20 flex min-h-[440px] items-end overflow-hidden pb-14 pt-36 lg:min-h-[520px] lg:pb-20">
+    <section className="relative isolate flex min-h-[420px] items-end overflow-hidden bg-navy lg:min-h-[480px]">
       <img
-        src={photoUrl(imageId, 2000)}
+        src={photoUrl(imageId, 1920)}
         srcSet={photoSrcSet(imageId)}
         sizes="100vw"
         alt={imageAlt}
@@ -21,13 +23,20 @@ export function PageHero({ eyebrow, title, description, imageId, imageAlt }: Pro
         {...HIGH_PRIORITY}
         decoding="async"
       />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/75 to-ink/50" aria-hidden="true" />
+      <div className="absolute inset-0 -z-10 bg-navy/75" aria-hidden="true" />
+      <div
+        className="absolute inset-0 -z-10 bg-gradient-to-t from-navy via-navy/60 to-navy/30"
+        aria-hidden="true"
+      />
 
-      <div className="shell relative">
-        <p className="eyebrow">{eyebrow}</p>
-        <h1 className="display-lg mt-5 max-w-3xl text-cream">{title}</h1>
+      <div className="shell relative pb-14 pt-32 lg:pb-16 lg:pt-40">
+        <p className="eyebrow text-gold-soft">{eyebrow}</p>
+        <h1 className="display-lg mt-4 max-w-3xl text-ivory">{title}</h1>
         {description && (
-          <p className="mt-6 max-w-xl text-sm leading-relaxed text-cream/70">{description}</p>
+          <p className="mt-5 max-w-xl text-[13.5px] leading-relaxed text-ivory/70">{description}</p>
+        )}
+        {script && (
+          <p className="mt-5 font-script text-[1.8rem] leading-snug text-gold-soft">{script}</p>
         )}
       </div>
     </section>

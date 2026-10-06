@@ -12,9 +12,8 @@ type SmartImageProps = {
 }
 
 /**
- * Responsive, lazily loaded photography with a consistent grade applied via
- * `imgGrade` in the parent. Width/height are intentionally omitted: every usage
- * sits inside an aspect-ratio box, which is what prevents layout shift.
+ * Responsive, lazily loaded photography. Width/height are intentionally omitted:
+ * every usage sits inside an aspect-ratio box, which is what prevents layout shift.
  */
 export function SmartImage({ id, alt, className = '', sizes = '100vw', priority = false }: SmartImageProps) {
   return (

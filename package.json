@@ -1,9 +1,9 @@
 {
-  "name": "dubai-elite-homes",
+  "name": "dubai-house",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Dubai Elite Homes — luxury real estate, investment and lifestyle.",
+  "description": "Dubai House — luxury real estate, investment and lifestyle in Dubai.",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 3000",
     "build": "tsc --noEmit && vite build",

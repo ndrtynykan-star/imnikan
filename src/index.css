@@ -3,17 +3,13 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    color-scheme: dark;
-  }
-
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
 
   body {
-    @apply bg-ink font-sans text-cream antialiased;
+    @apply bg-warm font-sans text-ink antialiased;
     text-rendering: optimizeLegibility;
   }
 
@@ -21,16 +17,17 @@
   h2,
   h3,
   h4 {
-    @apply font-display font-medium;
+    @apply font-display;
+    font-weight: 500;
   }
 
   ::selection {
-    background: #c9a15b;
-    color: #071016;
+    background: #c6a56a;
+    color: #071726;
   }
 
   :focus-visible {
-    outline: 2px solid #d8b477;
+    outline: 2px solid #c6a56a;
     outline-offset: 3px;
     border-radius: 2px;
   }
@@ -41,63 +38,59 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #071016;
+    background: #f5f0e7;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #24313a;
+    background: #cbbfa8;
     border-radius: 999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #3a4a54;
+    background: #b3a488;
   }
 }
 
 @layer components {
-  /* Page gutter, used by every section so the rhythm stays consistent. */
+  /* Page gutter — every section shares it so the rhythm stays consistent. */
   .shell {
-    @apply mx-auto w-full max-w-shell px-5 sm:px-8 lg:px-10;
+    @apply mx-auto w-full max-w-shell px-5 sm:px-8 lg:px-12;
   }
 
   .eyebrow {
-    @apply font-sans text-[10.5px] font-medium uppercase tracking-label text-champagne;
+    @apply font-sans text-[10.5px] font-semibold uppercase tracking-label text-gold;
   }
 
-  .eyebrow-dark {
-    @apply font-sans text-[10.5px] font-medium uppercase tracking-label text-gold;
+  .eyebrow-muted {
+    @apply font-sans text-[10.5px] font-semibold uppercase tracking-label text-muted;
   }
 
   .rule-gold {
-    @apply h-px w-12 bg-champagne/70;
-  }
-
-  .rule-gold-dark {
-    @apply h-px w-12 bg-gold/70;
+    @apply h-px w-10 bg-gold;
   }
 
   .display-xl {
-    @apply font-display text-[2.6rem] leading-[0.98] tracking-[-0.01em] sm:text-[3.6rem] lg:text-[4.4rem] xl:text-[5rem];
+    @apply font-display text-[2.5rem] leading-[1.04] tracking-[-0.015em] sm:text-[3.1rem] lg:text-[3.5rem] xl:text-[3.9rem];
   }
 
   .display-lg {
-    @apply font-display text-[2.1rem] leading-[1.03] tracking-[-0.01em] sm:text-[2.8rem] lg:text-[3.4rem];
+    @apply font-display text-[2.1rem] leading-[1.08] tracking-[-0.012em] sm:text-[2.7rem] lg:text-[3.2rem];
   }
 
   .display-md {
-    @apply font-display text-[1.6rem] leading-[1.1] sm:text-[2rem] lg:text-[2.4rem];
+    @apply font-display text-[1.65rem] leading-[1.15] sm:text-[2rem] lg:text-[2.3rem];
   }
 
+  /* Thin uppercase nav / metadata link with the gold underline reveal. */
   .link-underline {
     @apply relative inline-block;
   }
 
   .link-underline::after {
     content: '';
-    @apply absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-champagne transition-transform duration-500 ease-luxury;
+    @apply absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-gold transition-transform duration-500 ease-luxury;
   }
 
-  /* NavLink sets aria-current="page" on the active route. */
   .link-underline:hover::after,
   .link-underline[aria-current='page']::after {
     @apply scale-x-100;
@@ -105,7 +98,7 @@
 
   /* Scroll reveal — driven by useReveal(). */
   .reveal {
-    @apply translate-y-7 opacity-0 transition-[opacity,transform] duration-700 ease-luxury;
+    @apply translate-y-8 opacity-0 transition-[opacity,transform] duration-700 ease-luxury;
   }
 
   .reveal[data-visible='true'] {

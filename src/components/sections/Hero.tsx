@@ -1,14 +1,15 @@
-import { ArrowButton } from '@/components/ui/ArrowButton'
-import { TrustStrip } from '@/components/sections/TrustStrip'
+import { HeroSearch } from '@/components/search/HeroSearch'
+import { HeroStats } from '@/components/sections/HeroStats'
 import { HIGH_PRIORITY, PHOTO, photoSrcSet, photoUrl } from '@/lib/images'
 import { useParallax } from '@/hooks/useParallax'
+import { HERO_EYEBROW, HERO_SCRIPT, HERO_SUBTITLE, HERO_TITLE_LINES } from '@/data/content'
 
 export function Hero() {
-  const parallaxRef = useParallax<HTMLDivElement>(0.14)
+  const parallaxRef = useParallax<HTMLDivElement>(0.12)
 
   return (
-    <section className="relative isolate -mt-20 flex min-h-[680px] flex-col justify-end overflow-hidden lg:min-h-[840px]">
-      <div ref={parallaxRef} className="absolute inset-x-0 -top-24 bottom-0 -z-10" aria-hidden="true">
+    <section className="relative isolate flex min-h-[700px] flex-col justify-end overflow-hidden lg:min-h-[min(860px,94svh)]">
+      <div ref={parallaxRef} className="absolute inset-x-0 -top-20 bottom-0 -z-10" aria-hidden="true">
         <img
           src={photoUrl(PHOTO.heroSkyline, 2400)}
           srcSet={photoSrcSet(PHOTO.heroSkyline)}
@@ -21,45 +22,51 @@ export function Hero() {
         />
       </div>
 
+      {/* Readability scrims — heavier on the left where the copy sits. */}
       <div
-        className="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/70 to-transparent"
+        className="absolute inset-0 -z-10 bg-gradient-to-r from-navy/95 via-navy/55 to-navy/10"
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/25 to-ink/55"
+        className="absolute inset-x-0 bottom-0 -z-10 h-2/3 bg-gradient-to-t from-navy/85 to-transparent"
         aria-hidden="true"
       />
 
-      <div className="shell relative pb-14 pt-40 lg:pb-20 lg:pt-52">
+      <div className="shell relative pb-10 pt-28 lg:pb-12 lg:pt-32">
         <div className="max-w-3xl">
-          <p className="eyebrow animate-fade-in">Dubai Luxury Real Estate</p>
-
-          <h1 className="display-xl mt-6 text-cream animate-fade-up">
-            Find Your
-            <br />
-            Place In
-            <br />
-            <span className="text-champagne">Dubai.</span>
-          </h1>
-
-          <p className="mt-7 max-w-md font-sans text-sm leading-relaxed text-cream/75 sm:text-[15px] animate-fade-up">
-            Exceptional properties.
-            <br />
-            Expert guidance.
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-2 animate-fade-in">
+            {HERO_EYEBROW.map((word, index) => (
+              <span key={word} className="flex items-center gap-3">
+                {index > 0 && <span className="h-3 w-px bg-gold/60" aria-hidden="true" />}
+                <span className="text-[10px] font-semibold uppercase tracking-[0.32em] text-gold-soft">
+                  {word}
+                </span>
+              </span>
+            ))}
           </p>
 
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4 animate-fade-up">
-            <ArrowButton to="/properties" variant="gold" size="lg" className="w-full sm:w-auto">
-              View Properties
-            </ArrowButton>
-            <ArrowButton to="/properties?view=locations" variant="outline" size="lg" className="w-full sm:w-auto">
-              Explore Dubai
-            </ArrowButton>
-          </div>
+          <h1 className="display-xl mt-6 text-ivory animate-fade-up">
+            {HERO_TITLE_LINES.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </h1>
+
+          <p className="mt-4 font-script text-[1.8rem] leading-tight text-gold-soft animate-fade-up sm:text-[2.1rem]">
+            {HERO_SCRIPT}
+          </p>
+
+          <p className="mt-5 max-w-lg text-[14px] leading-relaxed text-ivory/80 animate-fade-up">
+            {HERO_SUBTITLE}
+          </p>
+        </div>
+
+        <div className="mt-9 max-w-5xl animate-fade-up">
+          <HeroSearch />
+          <HeroStats />
         </div>
       </div>
-
-      <TrustStrip />
     </section>
   )
 }
