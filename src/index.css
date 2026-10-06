@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-ink font-sans text-cream antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-medium;
+  }
+
+  ::selection {
+    background: #c9a15b;
+    color: #071016;
+  }
+
+  :focus-visible {
+    outline: 2px solid #d8b477;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #071016;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #24313a;
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3a4a54;
+  }
+}
+
+@layer components {
+  /* Page gutter, used by every section so the rhythm stays consistent. */
+  .shell {
+    @apply mx-auto w-full max-w-shell px-5 sm:px-8 lg:px-10;
+  }
+
+  .eyebrow {
+    @apply font-sans text-[10.5px] font-medium uppercase tracking-label text-champagne;
+  }
+
+  .eyebrow-dark {
+    @apply font-sans text-[10.5px] font-medium uppercase tracking-label text-gold;
+  }
+
+  .rule-gold {
+    @apply h-px w-12 bg-champagne/70;
+  }
+
+  .rule-gold-dark {
+    @apply h-px w-12 bg-gold/70;
+  }
+
+  .display-xl {
+    @apply font-display text-[2.6rem] leading-[0.98] tracking-[-0.01em] sm:text-[3.6rem] lg:text-[4.4rem] xl:text-[5rem];
+  }
+
+  .display-lg {
+    @apply font-display text-[2.1rem] leading-[1.03] tracking-[-0.01em] sm:text-[2.8rem] lg:text-[3.4rem];
+  }
+
+  .display-md {
+    @apply font-display text-[1.6rem] leading-[1.1] sm:text-[2rem] lg:text-[2.4rem];
+  }
+
+  .link-underline {
+    @apply relative inline-block;
+  }
+
+  .link-underline::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-champagne transition-transform duration-500 ease-luxury;
+  }
+
+  /* NavLink sets aria-current="page" on the active route. */
+  .link-underline:hover::after,
+  .link-underline[aria-current='page']::after {
+    @apply scale-x-100;
+  }
+
+  /* Scroll reveal — driven by useReveal(). */
+  .reveal {
+    @apply translate-y-7 opacity-0 transition-[opacity,transform] duration-700 ease-luxury;
+  }
+
+  .reveal[data-visible='true'] {
+    @apply translate-y-0 opacity-100;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
