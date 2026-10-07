@@ -1,14 +1,13 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useSyncExternalStore } from 'react'
 import { HeroSearch } from '@/components/search/HeroSearch'
 import { HeroStats } from '@/components/sections/HeroStats'
-import { HeroScene } from '@/components/three/HeroScene'
 import { HIGH_PRIORITY, PHOTO, photoSrcSet, photoUrl } from '@/lib/images'
 import { useParallax } from '@/hooks/useParallax'
+import { useVideoScrub } from '@/hooks/useVideoScrub'
 import { HERO_EYEBROW, HERO_SCRIPT, HERO_SUBTITLE, HERO_TITLE_LINES } from '@/data/content'
 
 /**
- * The original image hero — kept as the WebGL fallback if the browser cannot
- * create a 3D context (and as the plain backdrop while the scene compiles).
+ * The original image hero — kept as the fallback if the hero video fails to load.
  */
 function HeroImageScene() {
   const parallaxRef = useParallax<HTMLDivElement>(0.12)
@@ -78,7 +77,7 @@ function HeroCopy() {
   )
 }
 
-/** Quiet scrolling affordance for the pinned 3D flight. */
+/** Quiet scrolling affordance for the pinned video flight. */
 function ScrollHint() {
   return (
     <p className="mt-7 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-ivory/70">
@@ -88,67 +87,102 @@ function ScrollHint() {
   )
 }
 
+/** True at lg+ — where the full hero (copy, search, stats) fits one pinned screen. */
+const LG_QUERY = '(min-width: 1024px)'
+function useIsLarge() {
+  return useSyncExternalStore(
+    (cb) => {
+      const mq = window.matchMedia(LG_QUERY)
+      mq.addEventListener('change', cb)
+      return () => mq.removeEventListener('change', cb)
+    },
+    () => window.matchMedia(LG_QUERY).matches,
+  )
+}
+
+function HeroSearchBlock({ className = '' }: { className?: string }) {
+  return (
+    <div className={`max-w-5xl animate-fade-up ${className}`}>
+      <HeroSearch />
+      <HeroStats />
+    </div>
+  )
+}
+
+const HERO_VIDEO = '/videos/hero.mp4'
+const HERO_POSTER = '/videos/hero-poster.jpg'
+
 /**
- * Pinned 3D hero — a full-screen WebGL corridor the camera flies through as the
- * user scrolls (reversed just the same). The wrapper spans 300svh; the canvas
- * stays sticky at the top of the viewport, then releases into the next section.
+ * Pinned cinematic hero — the supplied 3D fly-through video fills the viewport
+ * and its timeline is driven by scroll (forwards and backwards). The wrapper
+ * spans 300svh; the video stays sticky and releases into the next section on
+ * its final frame. Reduced-motion users get the static poster frame; a video
+ * load failure falls back to the original image hero.
  */
 export function Hero() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const [failed, setFailed] = useState(false)
+  const isLarge = useIsLarge()
 
   const reducedMotion = useRef(
     typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   ).current
 
+  useVideoScrub(sectionRef, videoRef, !reducedMotion && !failed)
+
   if (failed) return <HeroImageScene />
 
   return (
-    <section ref={sectionRef} className="relative h-[300svh]">
-      <div className="sticky top-0 flex h-svh flex-col justify-end overflow-hidden isolate">
-        <div className="absolute inset-0 -z-10" aria-hidden="true">
-          {/* Backdrop while WebGL initialises; also the non-WebGL fallback. */}
-          <img
-            src={photoUrl(PHOTO.heroSkyline, 2400)}
-            srcSet={photoSrcSet(PHOTO.heroSkyline)}
-            sizes="100vw"
-            alt=""
-            className="h-full w-full object-cover object-center"
-            {...HIGH_PRIORITY}
-            decoding="async"
-          />
-          <HeroScene
-            sectionRef={sectionRef}
-            contentRef={contentRef}
-            staticFrame={reducedMotion}
-            onFailed={() => setFailed(true)}
-          />
+    <>
+    <section ref={sectionRef} className={`relative ${reducedMotion ? '' : 'h-[300svh]'}`}>
+      <div className="sticky top-0 flex h-svh w-full flex-col justify-end overflow-hidden isolate">
+        <div className="absolute inset-0 -z-10 bg-navy" aria-hidden="true">
+          {reducedMotion ? (
+            <img src={HERO_POSTER} alt="" className="h-full w-full object-cover object-center" />
+          ) : (
+            <video
+              ref={videoRef}
+              src={HERO_VIDEO}
+              poster={HERO_POSTER}
+              muted
+              playsInline
+              preload="auto"
+              disablePictureInPicture
+              tabIndex={-1}
+              onError={() => setFailed(true)}
+              className="h-full w-full object-cover object-center"
+            />
+          )}
         </div>
 
-        {/* Readability scrims — kept light so the 3D scene stays dominant. */}
+        {/* Light readability scrims — the video stays visually dominant. */}
         <div
-          className="absolute inset-0 -z-10 bg-gradient-to-r from-navy/80 via-navy/35 to-navy/5"
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-navy/60 via-navy/15 to-transparent"
           aria-hidden="true"
         />
         <div
-          className="absolute inset-x-0 bottom-0 -z-10 h-2/3 bg-gradient-to-t from-navy/75 to-transparent"
+          className="absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-gradient-to-t from-navy/60 to-transparent"
           aria-hidden="true"
         />
 
-        <div
-          ref={contentRef}
-          className="shell relative z-10 pb-10 pt-28 lg:pb-12 lg:pt-32 will-change-transform"
-        >
+        <div className="shell relative z-10 pb-10 pt-28 lg:pb-12 lg:pt-32">
           <HeroCopy />
-          <div className="mt-9 max-w-5xl animate-fade-up">
-            <HeroSearch />
-            <HeroStats />
-          </div>
-          <ScrollHint />
+          {isLarge && <HeroSearchBlock className="mt-9" />}
+          {!reducedMotion && <ScrollHint />}
         </div>
       </div>
     </section>
+    {/* Small screens: the search module can't share one pinned screen with the
+        headline, so it follows directly after the video flight. */}
+    {!isLarge && (
+      <div className="bg-navy">
+        <div className="shell pb-10 pt-8">
+          <HeroSearchBlock />
+        </div>
+      </div>
+    )}
+    </>
   )
 }

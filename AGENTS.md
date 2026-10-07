@@ -57,5 +57,10 @@ Tokens live in `tailwind.config.js`; component classes (`.shell`, `.eyebrow`,
 - Tailwind config changes are NOT hot-reloaded by the running dev server — the
   PostCSS cache goes stale and every `@apply` of a new class errors. Restart the
   service after editing `tailwind.config.js`.
+- Hero = `public/videos/hero.mp4`, scrubbed by scroll (`src/hooks/useVideoScrub.ts`).
+  It MUST be encoded all-keyframe or scrubbing stutters (the source had only 3
+  keyframes). Re-encode a new source with:
+  `docker run --rm -v /tmp:/v jrottenberg/ffmpeg:4-alpine -i /v/src.mp4 -an -c:v libx264 -crf 20 -g 1 -keyint_min 1 -sc_threshold 0 -pix_fmt yuv420p -movflags +faststart /v/hero.mp4`
+  and regenerate `hero-poster.jpg` (first frame).
 - Filters round-trip through the URL (`src/lib/filters.ts`); the hero search,
   footer links and the Properties page all read the same query params.
