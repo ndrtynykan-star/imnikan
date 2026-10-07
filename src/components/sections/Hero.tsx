@@ -1,18 +1,14 @@
 import { useRef, useState } from 'react'
 import { HeroSearch } from '@/components/search/HeroSearch'
 import { HeroStats } from '@/components/sections/HeroStats'
+import { HeroScene } from '@/components/three/HeroScene'
 import { HIGH_PRIORITY, PHOTO, photoSrcSet, photoUrl } from '@/lib/images'
 import { useParallax } from '@/hooks/useParallax'
-import { useScrollScrub } from '@/hooks/useScrollScrub'
 import { HERO_EYEBROW, HERO_SCRIPT, HERO_SUBTITLE, HERO_TITLE_LINES } from '@/data/content'
 
-const HERO_POSTER = photoUrl(PHOTO.heroSkyline, 1600)
-
 /**
- * The original image hero. Reused three times:
- *  1. as the backdrop that shows while the video buffers (no black flash),
- *  2. as the full experience for `prefers-reduced-motion` users,
- *  3. as the fallback if the video file cannot load.
+ * The original image hero — kept as the WebGL fallback if the browser cannot
+ * create a 3D context (and as the plain backdrop while the scene compiles).
  */
 function HeroImageScene() {
   const parallaxRef = useParallax<HTMLDivElement>(0.12)
@@ -82,35 +78,24 @@ function HeroCopy() {
   )
 }
 
-/** Scrolling hint — quiet, non-blocking, disappears with the rest of the copy. */
-function ScrollHint({ ready }: { ready: boolean }) {
+/** Quiet scrolling affordance for the pinned 3D flight. */
+function ScrollHint() {
   return (
-    <p
-      className="mt-7 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-ivory/70 transition-opacity duration-500"
-      style={{ opacity: ready ? undefined : 0 }}
-    >
+    <p className="mt-7 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-ivory/70">
       <span className="h-px w-10 bg-gold/70" aria-hidden="true" />
-      Scroll to explore
+      Scroll to fly through Dubai
     </p>
   )
 }
 
 /**
- * Cinematic scroll-scrubbed hero.
- *
- * The video is NEVER played, looped or autoplayed — scrolling alone drives
- * `video.currentTime`, in both directions, through the entire clip. The hero
- * wrapper spans 300svh; the visual itself is pinned for that distance, then
- * releases seamlessly into the next section with the clip resting on its final
- * frame. React renders only on load-state transitions; every scroll-driven
- * frame update happens in one rAF loop writing straight to the video element.
+ * Pinned 3D hero — a full-screen WebGL corridor the camera flies through as the
+ * user scrolls (reversed just the same). The wrapper spans 300svh; the canvas
+ * stays sticky at the top of the viewport, then releases into the next section.
  */
 export function Hero() {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const readyRef = useRef(false)
-  const [revealed, setRevealed] = useState(false)
   const [failed, setFailed] = useState(false)
 
   const reducedMotion = useRef(
@@ -118,15 +103,13 @@ export function Hero() {
       window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   ).current
 
-  useScrollScrub({ sectionRef, videoRef, contentRef, readyRef })
-
-  if (reducedMotion || failed) return <HeroImageScene />
+  if (failed) return <HeroImageScene />
 
   return (
     <section ref={sectionRef} className="relative h-[300svh]">
       <div className="sticky top-0 flex h-svh flex-col justify-end overflow-hidden isolate">
-        <div className="absolute inset-x-0 inset-y-0 -z-10" aria-hidden="true">
-          {/* Loading backdrop / fallback — replaced visually by the video reveal. */}
+        <div className="absolute inset-0 -z-10" aria-hidden="true">
+          {/* Backdrop while WebGL initialises; also the non-WebGL fallback. */}
           <img
             src={photoUrl(PHOTO.heroSkyline, 2400)}
             srcSet={photoSrcSet(PHOTO.heroSkyline)}
@@ -136,72 +119,34 @@ export function Hero() {
             {...HIGH_PRIORITY}
             decoding="async"
           />
-
-          {/*
-            Scroll-scrubbed hero clip. The sources are ordered so capable
-            browsers take the lighter WebM; both files are web-optimised MP4
-            H.264 / VP9 with a keyframe every 2 frames and +faststart, which is
-            what keeps random-access seeking instant (see useScrollScrub).
-            Deliberately no autoplay / loop / muted-attr-hack beyond the
-            required mute: scrubbing must never become playback.
-          */}
-          <video
-            ref={videoRef}
-            poster={HERO_POSTER}
-            preload="auto"
-            muted
-            playsInline
-            disableRemotePlayback
-            tabIndex={-1}
-            onCanPlayThrough={() => {
-              readyRef.current = true
-              setRevealed(true)
-            }}
-            onError={() => setFailed(true)}
-            className={[
-              'absolute inset-0 h-full w-full object-cover object-center',
-              'transition-opacity duration-700 ease-luxury',
-              revealed ? 'opacity-100' : 'opacity-0',
-            ].join(' ')}
-          >
-            <source src="/videos/hero.webm" type="video/webm" />
-            <source src="/videos/hero.mp4" type="video/mp4" />
-          </video>
+          <HeroScene
+            sectionRef={sectionRef}
+            contentRef={contentRef}
+            staticFrame={reducedMotion}
+            onFailed={() => setFailed(true)}
+          />
         </div>
 
-        {/* Readability scrims — kept subtle so the video stays dominant. */}
+        {/* Readability scrims — kept light so the 3D scene stays dominant. */}
         <div
-          className="absolute inset-0 -z-10 bg-gradient-to-r from-navy/90 via-navy/45 to-navy/5"
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-navy/80 via-navy/35 to-navy/5"
           aria-hidden="true"
         />
         <div
-          className="absolute inset-x-0 bottom-0 -z-10 h-2/3 bg-gradient-to-t from-navy/80 to-transparent"
+          className="absolute inset-x-0 bottom-0 -z-10 h-2/3 bg-gradient-to-t from-navy/75 to-transparent"
           aria-hidden="true"
         />
 
-        {/* Minimal premium loading treatment — a whisper, not a spinner. */}
-        {!revealed && (
-          <div
-            role="status"
-            aria-label="Preparing the cinematic experience"
-            className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
-          >
-            <div className="flex flex-col items-center gap-4">
-              <span className="h-7 w-7 animate-spin rounded-full border border-gold/25 border-t-gold" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.32em] text-ivory/70">
-                Preparing Experience
-              </span>
-            </div>
-          </div>
-        )}
-
-        <div ref={contentRef} className="shell relative pb-10 pt-28 lg:pb-12 lg:pt-32 will-change-transform">
+        <div
+          ref={contentRef}
+          className="shell relative z-10 pb-10 pt-28 lg:pb-12 lg:pt-32 will-change-transform"
+        >
           <HeroCopy />
           <div className="mt-9 max-w-5xl animate-fade-up">
             <HeroSearch />
             <HeroStats />
           </div>
-          <ScrollHint ready={revealed} />
+          <ScrollHint />
         </div>
       </div>
     </section>
